@@ -1,0 +1,29 @@
+body{
+	background:url("../images/game.jpg");
+}
+.jumbotron{
+	background: url("../images/background.jpg");
+	margin-top:10%;
+	text-align:center;
+	color:#505160;
+	font-weight:bold;
+	height:600px;
+}
+h2{
+	display:none;
+}
+#restart{
+	display:none;
+}
+#question{
+	margin-top:20px;
+	font-size:28px;
+	color:#AEBD38;
+}
+.option{
+	padding:10px;
+	font-size:26px;
+	color:#598234;
+	margin-top:20px;
+	text-decoration:underline;
+}
