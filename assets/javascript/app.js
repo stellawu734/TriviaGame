@@ -1,89 +1,146 @@
-//defined variables - objects for each questions and choices and answer
+//need to add timer and maybe pictures
 var timeRemaining=30;
+var answer;
+var win = 0;
+var loss = 0;
+var ranOutTime = 0;
 
-var firstQ = {
+var Question1 = {
 question:"Planet Earth is the ______ planet from the Sun.",
-choice1:"Second",
-choice2:"Third",
-choice3:"Fourth",
-choice4:"Fifth",
-answer:"Third"
+choice:["Second",
+"Third",
+"Fourth",
+"Fifth",
+"Third"]
 };
-var secondQ = {
+var Question2 = {
 question:"About how many eggs does a queen bee lay each day?",
-choice1:"1-2",
-choice2:"1,000-3,000",
-choice3:"10,000",
-choice4:"100-300",
-answer:"1,000-3,000"
+choice:["1-2",
+"1,000-3,000",
+"10,000",
+"100-300",
+"1,000-3,000"]
 };
-var thirdQ = {
+var Question3 = {
 question:"It is now believed that dinosaurs became extinct because of:",
-choice1:"Diseases",
-choice2:"Hunting by early humans",
-choice3:"A meteorite impact",
-choice4:"An earthquake",
-answer:"A meteorite impact"
+choice:["Diseases",
+"Hunting by early humans",
+"A meteorite impact",
+"An earthquake",
+"A meteorite impact"]
 };
-var fourthQ = {
+var Question4 = {
 question:"What is NOT found in sharks?",
-choice1:"Skin",
-choice2:"Bones",
-choice3:"Teeth",
-choice4:"Gills",
-answer:"Bones"
+choice:["Skin",
+"Bones",
+"Teeth",
+"Gills",
+"Bones"]
 };
-var fifthQ = {
+var Question5 = {
 question:"What are clouds made out of?",
-choice1:"Water",
-choice2:"Fog",
-choice3:"Smoke",
-choice4:"Cotton",
-answer:"Water"
+choice:["Water",
+"Fog",
+"Smoke",
+"Cotton",
+"Water"]
 };
-var sixthQ = {
-question:"The metal mercury is…",
-choice1:"The hardest known metal",
-choice2:"A liquid at room temperatur",
-choice3:"is the 79th element in the table",
-choice4:"highly radioactive",
-answer:"A liquid at room temperatur"
+var Question6 = {
+question:"The metal mercury is: ",
+choice:["The hardest known metal",
+"A liquid at room temperatur",
+"is the 79th element in the table",
+"highly radioactive",
+"A liquid at room temperatur"]
 };
-var seventhQ = {
+var Question7 = {
 question:"If you were to take a lump of coal and squeeze for a long time at very high temperatures, you would end up with…",
-choice1:"Volvanic Glass, aka obsidian",
-choice2:"Ash",
-choice3:"A smaller lump of coal",
-choice4:"A diamond",
-answer:"A diamond"
+choice:["Volvanic Glass, aka obsidian",
+"Ash",
+"A smaller lump of coal",
+"A diamond",
+"A diamond"]
 };
-var eighthQ = {
+var Question8 = {
 question:"If I dissolve some sugar in regular water, what have I made?",
-choice1:"Sweet Tea",
-choice2:"Saline",
-choice3:"Mixture",
-choice4:"Solution",
-answer:"Solution"
+choice:["Sweet Tea",
+"Saline",
+"Mixture",
+"Solution",
+"Solution"]
 };
 
 //define function
 function showQuestion(object) {
-    $("#question").html(object.question);
-	$("#option1").html(object.choice1);
-	$("#option2").html(object.choice2);
-	$("#option3").html(object.choice3);
-	$("#option4").html(object.choice4);
+	$(".option").css("color","#598234");
+	$(".option").on("mouseover",function() {
+		$(this).css("color","white")
+	});
+	$(".option").on("mouseout",function() {
+		$(this).css("color","#598234")
+	});
+    $("#question").html(object.question).show();
+	$("#option1").html(object.choice[0]);
+	$("#option2").html(object.choice[1]).show().css("color","#598234");
+	$("#option3").html(object.choice[2]);
+	$("#option4").html(object.choice[3]);
+	answer = object.choice[4];
 }
+
 //click action on start
-$(document).ready(function(){
+$(document).ready(function() {
 
 $(".btn").on( "click", function() {
-	showQuestion(firstQ);
+	showQuestion(Question1);
 	$("#start").hide();
-	console.log(firstQ.answer);
 });
 
 //click action on each object
-//final show of result
+//right option - need to add in pictures and timer and junction operatives
+$(".option").on("click",function(){
+	if($(this).text()===answer) {
+		$("#question").html("Congratulations! You chose the right answer!").delay(5000).hide(0);
+		$(".option").empty();
+		win++;	
+		//pass on to the next Q
+	} else {
+		$("#question").html("Ah oh...").delay(5000).hide(0);
+		$(".option").empty();
+		$(".option").unbind("mouseover mouseout");
+		$("#option2").html("the right option is actually: " +  answer).delay(5000).hide(0).css("color","pink");
+		loss++;
+		//pass on to the next Q
+	};
+
+	setTimeout(function () {console.log(answer);
+		if(answer=="Third"){showQuestion(Question2)}
+		else if(answer=="1,000-3,000"){showQuestion(Question3)}
+		else if(answer=="A meteorite impact"){showQuestion(Question4)}
+		else if(answer=="Bones"){showQuestion(Question5)}
+		else if(answer=="Water"){showQuestion(Question6)}
+		else if(answer=="A liquid at room temperatur"){showQuestion(Question7)}
+		else if(answer=="A diamond"){showQuestion(Question8)}
+			else {//final show of result
+				$("#question").html("Game Over!").show();
+				$(".option").unbind("mouseover mouseout").css("color","#763626");
+				$("#option1").empty();
+				$("#option2").html("Wins: "+win).show();
+				$("#option3").html("Losses: "+loss);
+				$("#option4").html("Running out of time: "+ranOutTime);
+				$("#restart").show();
+			};
+	
+	},5000)
+
+});
 //reset
+$("#restart").on("click",function(){
+	win=0;
+	loss=0;
+	ranOutTime=0;
+	timeRemaining=30;
+	showQuestion(Question1);
+
+});
+
 });
