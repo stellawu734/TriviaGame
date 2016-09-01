@@ -9,8 +9,9 @@ body{
 	font-weight:bold;
 	height:600px;
 }
-h2{
+#timer{
 	display:none;
+	color:#F18D9E;
 }
 #restart{
 	display:none;

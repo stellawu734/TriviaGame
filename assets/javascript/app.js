@@ -1,9 +1,9 @@
 //need to add timer and maybe pictures
-var timeRemaining=30;
 var answer;
 var win = 0;
 var loss = 0;
 var ranOutTime = 0;
+var timeLeft = 30;
 
 var Question1 = {
 question:"Planet Earth is the ______ planet from the Sun.",
@@ -85,7 +85,50 @@ function showQuestion(object) {
 	$("#option3").html(object.choice[2]);
 	$("#option4").html(object.choice[3]);
 	answer = object.choice[4];
-}
+};
+
+function run(){
+timeLeft=30;
+$("#time").html(30);
+$("#timer").show();
+counter = setInterval(timeRun,1000)
+};
+function timeRun(){
+timeLeft = timeLeft -1;
+$("#time").html(timeLeft);
+	if (timeLeft === 0){      
+                stop();
+                $("#timer").hide();            
+                $("#question").html("Time Up!").delay(5000).hide(0);
+				$(".option").empty();
+                ranOutTime++;
+        setTimeout(function finalResult() {console.log(answer);
+		if(answer=="Third"){showQuestion(Question2);run();}
+		else if(answer=="1,000-3,000"){showQuestion(Question3);run();}
+		else if(answer=="A meteorite impact"){showQuestion(Question4);run();}
+		else if(answer=="Bones"){showQuestion(Question5);run();}
+		else if(answer=="Water"){showQuestion(Question6);run();}
+		else if(answer=="A liquid at room temperatur"){showQuestion(Question7);run();}
+		else if(answer=="A diamond"){showQuestion(Question8);run();}
+			else {//final show of result
+				$("#question").html("Game Over!").show();
+				$(".option").unbind("mouseover mouseout").css("color","#763626");
+				$("#option1").empty();
+				$("#option2").html("Wins: "+win).show();
+				$("#option3").html("Losses: "+loss);
+				$("#option4").html("Running out of time: "+ranOutTime);
+				$("#restart").show();
+			};
+	
+	},5000);
+            }
+ };
+
+function stop(){
+           
+            clearInterval(counter);
+ };
+
 
 //click action on start
 $(document).ready(function() {
@@ -93,11 +136,18 @@ $(document).ready(function() {
 $(".btn").on( "click", function() {
 	showQuestion(Question1);
 	$("#start").hide();
+	$("#timer").show();
+	run();
+
 });
 
 //click action on each object
 //right option - need to add in pictures and timer and junction operatives
 $(".option").on("click",function(){
+	stop();
+	$("#timer").hide();
+	timeLeft=30;
+	$("#time").html(30);
 	if($(this).text()===answer) {
 		$("#question").html("Congratulations! You chose the right answer!").delay(5000).hide(0);
 		$(".option").empty();
@@ -112,14 +162,14 @@ $(".option").on("click",function(){
 		//pass on to the next Q
 	};
 
-	setTimeout(function () {console.log(answer);
-		if(answer=="Third"){showQuestion(Question2)}
-		else if(answer=="1,000-3,000"){showQuestion(Question3)}
-		else if(answer=="A meteorite impact"){showQuestion(Question4)}
-		else if(answer=="Bones"){showQuestion(Question5)}
-		else if(answer=="Water"){showQuestion(Question6)}
-		else if(answer=="A liquid at room temperatur"){showQuestion(Question7)}
-		else if(answer=="A diamond"){showQuestion(Question8)}
+	setTimeout(function finalResult() {console.log(answer);
+		if(answer=="Third"){showQuestion(Question2);run();}
+		else if(answer=="1,000-3,000"){showQuestion(Question3);run();}
+		else if(answer=="A meteorite impact"){showQuestion(Question4);run();}
+		else if(answer=="Bones"){showQuestion(Question5);run();}
+		else if(answer=="Water"){showQuestion(Question6);run();}
+		else if(answer=="A liquid at room temperatur"){showQuestion(Question7);run();}
+		else if(answer=="A diamond"){showQuestion(Question8);run();}
 			else {//final show of result
 				$("#question").html("Game Over!").show();
 				$(".option").unbind("mouseover mouseout").css("color","#763626");
@@ -130,7 +180,7 @@ $(".option").on("click",function(){
 				$("#restart").show();
 			};
 	
-	},5000)
+	},5000);
 
 });
 //reset
@@ -138,8 +188,12 @@ $("#restart").on("click",function(){
 	win=0;
 	loss=0;
 	ranOutTime=0;
-	timeRemaining=30;
-	showQuestion(Question1);
+	timeLeft = 30;
+	$("#restart").hide();
+	$("#start").show();
+	$("#question").empty();
+	$(".option").empty();
+	$("#timer").hide();
 
 });
 
